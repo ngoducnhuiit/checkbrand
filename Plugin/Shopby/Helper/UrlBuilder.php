@@ -4,11 +4,6 @@ namespace Amasty\ShopbyBrand\Plugin\Shopby\Helper;
 
 use Amasty\ShopbyBrand\Helper\Content as ContentHelper;
 
-/**
- * Class UrlBuilder
- *
- * @package Amasty\ShopbyBrand\Plugin\Shopby\Helper
- */
 class UrlBuilder
 {
     /**

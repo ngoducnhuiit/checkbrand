@@ -4,14 +4,9 @@ namespace Amasty\ShopbyBrand\Plugin\ShopbySeo\Controller;
 
 use Magento\Framework\App\RequestInterface;
 
-/**
- * Class Router
- *
- * @package Amasty\ShopbyBrand\Plugin\ShopbySeo\Controller
- */
 class Router
 {
-    const SINGLE_PARAM = 1;
+    public const SINGLE_PARAM = 1;
 
     /**
      * @var \Amasty\ShopbyBrand\Helper\Data

@@ -4,11 +4,6 @@ namespace Amasty\ShopbyBrand\Model\Source;
 
 use Magento\Cms\Model\ResourceModel\Page\CollectionFactory;
 
-/**
- * Class Page
- *
- * @package Amasty\ShopbyBrand\Model\Source
- */
 class Page implements \Magento\Framework\Option\ArrayInterface
 {
     /**

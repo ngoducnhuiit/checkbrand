@@ -10,7 +10,7 @@ use Magento\Eav\Model\Config;
 
 class Brand
 {
-    const ENTITY_CODE = 'amasty_shopbybrand';
+    public const ENTITY_CODE = 'amasty_shopbybrand';
 
     /**
      * @var Helper

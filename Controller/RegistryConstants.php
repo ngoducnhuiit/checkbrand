@@ -2,11 +2,7 @@
 
 namespace Amasty\ShopbyBrand\Controller;
 
-/**
- * Class RegistryConstants
- * @package Amasty\ShopbyBrand\Controller
- */
 class RegistryConstants
 {
-    const FEATURED = 'amasty_shopbybrand_featured';
+    public const FEATURED = 'amasty_shopbybrand_featured';
 }

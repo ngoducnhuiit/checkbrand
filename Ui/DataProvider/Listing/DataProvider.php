@@ -11,7 +11,7 @@ use Magento\Framework\Api\Filter;
 
 class DataProvider extends AbstractDataProvider
 {
-    const VIRTUAL_STORE_ID = 'virtual_store_id';
+    public const VIRTUAL_STORE_ID = 'virtual_store_id';
 
     /**
      * @var array
@@ -55,7 +55,7 @@ class DataProvider extends AbstractDataProvider
             $condition = array_fill(0, count($mappedFields), $condition);
             $filter->setField($mappedFields);
         }
-        
+
         $this->getCollection()->addFieldToFilter(
             $filter->getField(),
             $condition
@@ -65,10 +65,9 @@ class DataProvider extends AbstractDataProvider
     public function processVirtualStoreFilter(Filter $filter): void
     {
         if ($filter->getField() == self::VIRTUAL_STORE_ID) {
-            $filter->setField(FilterSettingInterface::FILTER_CODE);
+            $filter->setField(FilterSettingInterface::ATTRIBUTE_CODE);
             $allAttributeCodes = $this->configProvider->getAllBrandAttributeCodes();
-            $value = (FilterSetting::ATTR_PREFIX . ($allAttributeCodes[$filter->getValue()] ?? '')) ?? '';
-            $filter->setValue($value);
+            $filter->setValue($allAttributeCodes[$filter->getValue()] ?? '');
         }
     }
 

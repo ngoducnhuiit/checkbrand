@@ -150,7 +150,7 @@ class LoadItems
             BrandDataInterface::IS_SHOW_IN_WIDGET => $setting->getIsShowInWidget(),
             BrandDataInterface::IS_SHOW_IN_SLIDER => $setting->getIsShowInSlider(),
             BrandDataInterface::BRAND_ID => $option->getValue(),
-            BrandDataInterface::LABEL => trim($setting->getLabel() ? : $option->getLabel()),
+            BrandDataInterface::LABEL => trim((string) ($setting->getLabel() ? : $option->getLabel())),
             BrandDataInterface::URL => $this->helper->getBrandUrl($option),
             BrandDataInterface::IMG => $setting->getSliderImageUrl(),
             BrandDataInterface::IMAGE => $setting->getImageUrl(),

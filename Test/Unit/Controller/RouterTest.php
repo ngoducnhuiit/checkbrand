@@ -18,13 +18,13 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     use Traits\ObjectManagerTrait;
     use Traits\ReflectionTrait;
 
-    const BRAND_PATH_IDENTIFIER = '/test';
+    public const BRAND_PATH_IDENTIFIER = '/test';
 
-    const BRAND_URL_KEY = 'test';
+    public const BRAND_URL_KEY = 'test';
 
-    const BRAND_ATR_CODE = 'batr';
+    public const BRAND_ATR_CODE = 'batr';
 
-    const BRAND_ALIASES = [
+    public const BRAND_ALIASES = [
         '1' => 'test'
     ];
 

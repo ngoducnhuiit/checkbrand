@@ -125,9 +125,12 @@ class OptionFormBuildAfter implements ObserverInterface
             ]
         );
 
-        if ($model->getFilterCode()
-            == FilterSetting::ATTR_PREFIX . $this->configProvider->getBrandAttributeCode($storeId)
-        ) {
+        $filterCode = $model->getFilterCode();
+        if (strpos($filterCode, FilterSetting::ATTR_PREFIX) !== false) {
+            $filterCode = substr($filterCode, 5);
+        }
+
+        if ($filterCode == $this->configProvider->getBrandAttributeCode($storeId)) {
             $productListFieldset->addField(
                 'short_description',
                 'textarea',

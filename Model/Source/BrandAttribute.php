@@ -5,11 +5,6 @@ namespace Amasty\ShopbyBrand\Model\Source;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory;
 use Magento\Eav\Model\Entity\Attribute;
 
-/**
- * Class BrandAttribute
- *
- * @package Amasty\ShopbyBrand\Model\Source
- */
 class BrandAttribute implements \Magento\Framework\Option\ArrayInterface
 {
     /** @var  CollectionFactory */

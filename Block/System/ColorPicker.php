@@ -1,11 +1,7 @@
 <?php
+
 namespace Amasty\ShopbyBrand\Block\System;
 
-/**
- * Class ColorPicker
- *
- * @package Amasty\ShopbyBrand\Block\System
- */
 class ColorPicker extends \Magento\Config\Block\System\Config\Form\Field
 {
     /**

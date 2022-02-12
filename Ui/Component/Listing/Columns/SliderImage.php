@@ -2,10 +2,6 @@
 
 namespace Amasty\ShopbyBrand\Ui\Component\Listing\Columns;
 
-/**
- * Class SliderImage
- * @package Amasty\ShopbyBrand\Ui\Component\Listing\Columns
- */
 class SliderImage extends Image
 {
     /**

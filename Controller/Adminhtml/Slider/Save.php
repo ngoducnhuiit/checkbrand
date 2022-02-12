@@ -2,10 +2,6 @@
 
 namespace Amasty\ShopbyBrand\Controller\Adminhtml\Slider;
 
-/**
- * Class Save
- * @package Amasty\ShopbyBrand\Controller\Adminhtml\Slider
- */
 class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option\Save
 {
     /**
@@ -18,6 +14,7 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option\Save
 
     protected function _redirectRefer()
     {
+        //phpcs:ignore Magento2.Legacy.ObsoleteResponse.ForwardResponseMethodFound
         $this->_forward('index');
     }
 }

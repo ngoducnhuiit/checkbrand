@@ -4,30 +4,19 @@ namespace Amasty\ShopbyBrand\Controller\Index;
 
 use Magento\Theme\Block\Html\Breadcrumbs;
 
-/**
- * Class Index
- *
- * @package Amasty\ShopbyBrand\Controller\Index
- */
 class Index extends \Magento\Framework\App\Action\Action
 {
     /**
-     * Core registry
-     *
      * @var \Magento\Framework\Registry
      */
     protected $coreRegistry = null;
 
     /**
-     * Catalog session
-     *
      * @var \Magento\Catalog\Model\Session
      */
     protected $catalogSession;
 
     /**
-     * Catalog design
-     *
      * @var \Magento\Catalog\Model\Design
      */
     protected $catalogDesign;

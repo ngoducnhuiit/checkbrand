@@ -5,11 +5,6 @@ namespace Amasty\ShopbyBrand\Plugin\Block\Html;
 use Magento\Store\Model\ScopeInterface;
 use Amasty\ShopbyBrand\Model\Source\TopmenuLink as TopmenuSource;
 
-/**
- * Class Topmenu
- *
- * @package Amasty\ShopbyBrand\Plugin\Block\Html
- */
 class Topmenu
 {
     /**

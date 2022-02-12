@@ -2,17 +2,12 @@
 
 namespace Amasty\ShopbyBrand\Model\Source;
 
-/**
- * Class Tooltip
- *
- * @package Amasty\ShopbyBrand\Model\Source
- */
 class Tooltip implements \Magento\Framework\Option\ArrayInterface
 {
-    const NO_DISPLAY = 'no';
-    const ALL_BRAND_PAGE = 'all_brands';
-    const PRODUCT_PAGE = 'product_page';
-    const LISTING_PAGE = 'listing_page';
+    public const NO_DISPLAY = 'no';
+    public const ALL_BRAND_PAGE = 'all_brands';
+    public const PRODUCT_PAGE = 'product_page';
+    public const LISTING_PAGE = 'listing_page';
 
     public function toOptionArray()
     {

@@ -13,6 +13,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class Attribute
 {
     /**
+     * @var array
+     */
+    private $brandOptions;
+
+    /**
      * @var ConfigProvider
      */
     private $configProvider;
@@ -21,8 +26,6 @@ class Attribute
      * @var AttributeRepository
      */
     private $attributeRepository;
-
-    private $brandOptions;
 
     public function __construct(ConfigProvider $configProvider, AttributeRepository $attributeRepository)
     {

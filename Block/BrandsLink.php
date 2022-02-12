@@ -2,11 +2,6 @@
 
 namespace Amasty\ShopbyBrand\Block;
 
-/**
- * Class BrandsLink
- *
- * @package Amasty\ShopbyBrand\Block
- */
 class BrandsLink extends \Magento\Framework\View\Element\Template
 {
     /**

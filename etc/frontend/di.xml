@@ -69,17 +69,17 @@
 
     <type name="Magento\Catalog\Block\Product\ListProduct">
         <plugin name="Amasty_ShopbyBrand::show_logo_on_listing"
-                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\Listing\ListProductPlugin" />
+                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\ListProduct\AddBrandIconForProduct" />
     </type>
 
     <virtualType name="Magento\CatalogSearch\Block\SearchResult\ListProduct">
         <plugin name="Amasty_ShopbyBrand::show_logo_on_listing_search"
-                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\Listing\ListProductPlugin" />
+                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\ListProduct\AddBrandIconForProduct" />
     </virtualType>
 
     <type name="Amasty\Mostviewed\Block\Widget\Related">
         <plugin name="Amasty_ShopbyBrand::add_to_related"
-                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\Listing\ListProductPlugin" />
+                type="Amasty\ShopbyBrand\Plugin\Catalog\Block\Product\ListProduct\AddBrandIconForProduct" />
     </type>
 
     <type name="Amasty\ShopbySeo\Controller\Router">

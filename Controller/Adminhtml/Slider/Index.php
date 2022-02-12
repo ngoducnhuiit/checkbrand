@@ -6,10 +6,6 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action;
 
-/**
- * Class Index
- * @package Amasty\ShopbyBrand\Controller\Adminhtml\Slider
- */
 class Index extends Action
 {
     /**

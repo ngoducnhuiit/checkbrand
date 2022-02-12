@@ -61,7 +61,7 @@ class EditTest extends \PHPUnit\Framework\TestCase
      */
     public function testLoadSettingModel()
     {
-        $this->request->expects($this->at(0))->method('getParam')->with('filter_code')->willReturn('test');
+        $this->request->expects($this->at(0))->method('getParam')->with('attribute_code')->willReturn('test');
         $this->request->expects($this->at(1))->method('getParam')->with('option_id')->willReturn(1);
         $this->request->expects($this->at(2))->method('getParam')->with('store', 0)->willReturn(2);
         $optionSetting = $this->getObjectManager()->getObject(\Amasty\ShopbyBase\Model\OptionSetting::class);
@@ -79,7 +79,7 @@ class EditTest extends \PHPUnit\Framework\TestCase
      */
     public function testLoadSettingModelWithoutData()
     {
-        $this->request->expects($this->at(0))->method('getParam')->with('filter_code')->willReturn(false);
+        $this->request->expects($this->at(0))->method('getParam')->with('attribute_code')->willReturn(false);
         $this->request->expects($this->at(1))->method('getParam')->with('option_id')->willReturn(false);
         $this->request->expects($this->at(2))->method('getParam')->with('store', 0)->willReturn(false);
         $this->expectException(\Magento\Framework\Exception\NoSuchEntityException::class);
@@ -95,7 +95,7 @@ class EditTest extends \PHPUnit\Framework\TestCase
     public function testLoadSettingModelWithoutModel()
     {
         $this->settingHelper->expects($this->any())->method('getSettingByValue')->willReturn($this->optionSetting);
-        $this->request->expects($this->at(0))->method('getParam')->with('filter_code')->willReturn('test');
+        $this->request->expects($this->at(0))->method('getParam')->with('attribute_code')->willReturn('test');
         $this->optionSetting->expects($this->any())->method('getId')->willReturn(0);
         $this->setProperty($this->controller, '_request', $this->request);
         $this->expectException(\Magento\Framework\Exception\NoSuchEntityException::class);

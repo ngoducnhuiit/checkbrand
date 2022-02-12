@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Amasty\ShopbyBrand\Ui\Component\Listing\Columns;
 
 use Amasty\ShopbyBase\Api\Data\OptionSettingRepositoryInterface;
+use Magento\Catalog\Helper\Image as ImageHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 
-/**
- * Class Image
- * @package Amasty\ShopbyBrand\Ui\Component\Listing\Columns
- */
 class Image extends \Magento\Ui\Component\Listing\Columns\Column
 {
     /**
@@ -19,31 +19,21 @@ class Image extends \Magento\Ui\Component\Listing\Columns\Column
     protected $brandRepository;
 
     /**
-     * @var \Magento\Catalog\Helper\Image
+     * @var ImageHelper
      */
     protected $imageHelper;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $urlBuilder;
 
-    /**
-     * Image constructor.
-     * @param ContextInterface $context
-     * @param UiComponentFactory $uiComponentFactory
-     * @param OptionSettingRepositoryInterface $brandRepository
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Magento\Catalog\Helper\Image $imageHelper
-     * @param array $components
-     * @param array $data
-     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
         OptionSettingRepositoryInterface $brandRepository,
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Magento\Catalog\Helper\Image $imageHelper,
+        UrlInterface $urlBuilder,
+        ImageHelper $imageHelper,
         array $components = [],
         array $data = []
     ) {

@@ -2,7 +2,6 @@
 
 namespace Amasty\ShopbyBrand\Plugin;
 
-use Amasty\ShopbyBase\Helper\FilterSetting;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Amasty\ShopbyBrand\Helper\Content;
 
@@ -45,6 +44,6 @@ class AttributeFilterPlugin
     protected function isBrandingBrand(AbstractFilter $subject)
     {
         $brand = $this->contentHelper->getCurrentBranding();
-        return $brand && (FilterSetting::ATTR_PREFIX . $subject->getRequestVar() == $brand->getFilterCode());
+        return $brand && ($subject->getRequestVar() == $brand->getFilterCode());
     }
 }

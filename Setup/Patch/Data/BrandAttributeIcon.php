@@ -7,7 +7,6 @@ namespace Amasty\ShopbyBrand\Setup\Patch\Data;
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Api\Data\FilterSettingRepositoryInterface;
 use Amasty\ShopbyBase\Helper\Data as BaseHelper;
-use Amasty\ShopbyBase\Helper\FilterSetting;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
@@ -45,9 +44,8 @@ class BrandAttributeIcon implements DataPatchInterface
             && $this->scopeConfig->isSetFlag('amshopby_brand/general/product_icon')
             && ($attributeCode = $this->scopeConfig->getValue('amshopby_brand/general/attribute_code'))
         ) {
-            $filterCode = FilterSetting::ATTR_PREFIX . $attributeCode;
             try {
-                $filter = $this->filterSettingRepository->get($filterCode, FilterSettingInterface::FILTER_CODE);
+                $filter = $this->filterSettingRepository->getByAttributeCode($attributeCode);
             } catch (NoSuchEntityException $e) {
                 return $this;
             }

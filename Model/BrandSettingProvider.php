@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBrand\Model;
 
+use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Api\Data\OptionSettingInterface;
 use Amasty\ShopbyBase\Helper\FilterSetting;
 use Amasty\ShopbyBase\Model\OptionSetting;
@@ -47,11 +48,10 @@ class BrandSettingProvider
             $attributeCode = $this->brandHelper->getBrandAttributeCode();
 
             if ($attributeCode) {
-                $filterCode = FilterSetting::ATTR_PREFIX . $attributeCode;
                 $stores = [0,  $storeId];
                 $collection = $this->collectionFactory->create()
                     ->addFieldToFilter('store_id', $stores)
-                    ->addFieldToFilter('filter_code', $filterCode)
+                    ->addFieldToFilter(OptionSettingInterface::FILTER_CODE, FilterSetting::ATTR_PREFIX . $attributeCode)
                     ->addOrder('store_id', 'ASC'); //current store values will rewrite defaults
 
                 /** @var OptionSettingInterface $item **/

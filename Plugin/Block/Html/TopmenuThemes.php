@@ -6,11 +6,6 @@ use Magento\Framework\Data\Tree\Node;
 use Magento\Store\Model\ScopeInterface;
 use Amasty\ShopbyBrand\Model\Source\TopmenuLink as TopmenuSource;
 
-/**
- * Class TopmenuThemes
- *
- * @package Amasty\ShopbyBrand\Plugin\Block\Html
- */
 class TopmenuThemes extends Topmenu
 {
     /**

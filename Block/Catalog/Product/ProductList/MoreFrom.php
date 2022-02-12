@@ -2,18 +2,20 @@
 
 namespace Amasty\ShopbyBrand\Block\Catalog\Product\ProductList;
 
-use Amasty\ShopbyBrand\Helper\Data;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\CatalogInventory\Helper\Stock;
+use Magento\Framework\App\ActionInterface;
 use Magento\Framework\Data\Helper\PostHelper;
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Url\Helper\Data as UrlHelper;
 
-class MoreFrom extends AbstractProduct
+class MoreFrom extends AbstractProduct implements IdentityInterface
 {
-    const DEFAULT_PRODUCT_LIMIT = 7;
+    public const DEFAULT_PRODUCT_LIMIT = 7;
 
     /**
      * @var CollectionFactory
@@ -21,18 +23,11 @@ class MoreFrom extends AbstractProduct
     private $productCollectionFactory;
 
     /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
      * @var Stock
      */
     private $stockHelper;
 
     /**
-     * Item collection
-     *
      * @var \Magento\Catalog\Model\ResourceModel\Product\Collection|array
      */
     private $itemCollection = [];
@@ -52,23 +47,80 @@ class MoreFrom extends AbstractProduct
      */
     private $postHelper;
 
+    /**
+     * @var \Amasty\ShopbyBrand\Model\ConfigProvider
+     */
+    private $configProvider;
+
+    /**
+     * @var \Amasty\ShopbyBrand\Model\Attribute
+     */
+    private $brandAttribute;
+
+    /**
+     * @var UrlHelper
+     */
+    private $urlHelper;
+
     public function __construct(
         Context $context,
         CollectionFactory $productCollectionFactory,
-        Data $helper,
         Stock $stockHelper,
         Status $productStatus,
         Visibility $productVisibility,
         PostHelper $postHelper,
+        \Amasty\ShopbyBrand\Model\ConfigProvider $configProvider,
+        \Amasty\ShopbyBrand\Model\Attribute $brandAttribute,
+        UrlHelper $urlHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->productCollectionFactory = $productCollectionFactory;
-        $this->helper = $helper;
         $this->stockHelper = $stockHelper;
         $this->productStatus = $productStatus;
         $this->productVisibility = $productVisibility;
         $this->postHelper = $postHelper;
+        $this->configProvider = $configProvider;
+        $this->brandAttribute = $brandAttribute;
+        $this->urlHelper = $urlHelper;
+    }
+
+    /**
+     * Initialize block's cache
+     *
+     * @return void
+     */
+    protected function _construct(): void
+    {
+        parent::_construct();
+
+        if (!$this->hasData('cache_lifetime')) {
+            $this->setData('cache_lifetime', 86400);
+        }
+    }
+
+    public function getCacheKeyInfo()
+    {
+        $cacheKeyInfo = parent::getCacheKeyInfo();
+        if ($this->configProvider->getBrandAttributeCode()) {
+            $cacheKeyInfo['product_id'] = $this->getProduct()->getId();
+        }
+
+        return $cacheKeyInfo;
+    }
+
+    public function getIdentities(): array
+    {
+        $attribute = $this->brandAttribute->getAttribute();
+        if ($attribute === null) {
+            return [];
+        }
+
+        $arrayOfIdentities = [[\Amasty\ShopbyBase\Model\OptionSetting::CACHE_TAG]];
+        $arrayOfIdentities[] = $attribute->getIdentities();
+        $arrayOfIdentities[] = $this->getProduct()->getIdentities();
+
+        return array_merge(...$arrayOfIdentities);
     }
 
     public function getItems(): array
@@ -91,47 +143,57 @@ class MoreFrom extends AbstractProduct
      */
     protected function _prepareData()
     {
-        /** @var \Magento\Catalog\Model\Product $product */
-        $product = $this->_coreRegistry->registry('product');
-        $attributeCode = $this->helper->getBrandAttributeCode();
-        $attributeValue = $product->getData($attributeCode);
+        $attributeValue = $this->getBrandValue();
 
         if (!$attributeValue) {
             return $this;
         }
         $attributeValue = explode(',', $attributeValue);
 
-        $this->initProductCollection(
-            $attributeCode,
-            $attributeValue,
-            $product->getId()
-        );
+        $this->initProductCollection($attributeValue);
 
         return $this;
     }
 
-    /**
-     * @param string $attributeCode
-     * @param array $attributeValue
-     * @param int $currentProductId
-     */
-    private function initProductCollection($attributeCode, $attributeValue, $currentProductId)
+    private function getBrandValue(): string
     {
+        $product = $this->getProduct();
+        $attributeCode = $this->configProvider->getBrandAttributeCode();
+        $attributeValue = $product->getData($attributeCode);
+
+        if (!$attributeValue) {
+            return '';
+        }
+
+        return (string) $attributeValue;
+    }
+
+    /**
+     * @param array $attributeValue
+     */
+    private function initProductCollection($attributeValue)
+    {
+        $currentProductId = (int) $this->getProduct()->getId();
+        $attributeCode = $this->configProvider->getBrandAttributeCode();
+
         $this->itemCollection = $this->productCollectionFactory->create()
-            ->addAttributeToSelect('*')
+            ->addAttributeToSelect(['small_image', 'name'])
             ->addAttributeToFilter($attributeCode, ['in' => $attributeValue])
             ->addFieldToFilter('entity_id', ['neq' => $currentProductId])
             ->addAttributeToFilter('status', ['in' => $this->productStatus->getVisibleStatusIds()])
             ->setVisibility($this->productVisibility->getVisibleInCatalogIds())
             ->addStoreFilter()
+            ->addMinimalPrice()
+            ->addFinalPrice()
+            ->addTaxPercents()
             ->setPageSize($this->getProductsLimit());
 
-        $this->itemCollection->setCurPage(rand(1, $this->itemCollection->getLastPageNumber() - 1));
+        $this->itemCollection->setCurPage(random_int(1, max($this->itemCollection->getLastPageNumber() - 1, 1)));
         $this->stockHelper->addInStockFilterToCollection($this->itemCollection);
 
         $this->itemCollection->load();
 
-        foreach ($this->itemCollection as $product) {
+        foreach ($this->itemCollection->getItems() as $product) {
             $product->setDoNotUseCategoryId(true);
         }
     }
@@ -141,7 +203,7 @@ class MoreFrom extends AbstractProduct
      */
     private function getProductsLimit()
     {
-        return $this->helper->getModuleConfig('more_from_brand/count') ? : self::DEFAULT_PRODUCT_LIMIT;
+        return $this->configProvider->getMoreFromProductsLimit($this->getStoreId()) ? : self::DEFAULT_PRODUCT_LIMIT;
     }
 
     /**
@@ -161,15 +223,15 @@ class MoreFrom extends AbstractProduct
      */
     protected function isEnabled()
     {
-        return $this->helper->getModuleConfig('more_from_brand/enable');
+        return $this->configProvider->isMoreFromEnabled($this->getStoreId());
     }
 
     /**
-     * @return \Magento\Framework\Phrase|mixed
+     * @return \Magento\Framework\Phrase|string
      */
     public function getTitle()
     {
-        $title = $this->helper->getModuleConfig('more_from_brand/title');
+        $title = $this->configProvider->getTitleMoreFrom($this->getStoreId());
         preg_match_all('@\{(.+?)\}@', $title, $matches);
         if (isset($matches[1]) && !empty($matches[1])) {
             foreach ($matches[1] as $match) {
@@ -189,17 +251,34 @@ class MoreFrom extends AbstractProduct
     }
 
     /**
+     * Retrieve product post data for buy request
+     *
+     * @param \Magento\Catalog\Model\Product $product
+     * @return string
+     */
+    public function getProductPostData(\Magento\Catalog\Model\Product $product): string
+    {
+        $postData = ['product' => $product->getEntityId()];
+        if (!$product->getTypeInstance()->isPossibleBuyFromList($product)) {
+            $url = $product->getProductUrl();
+            $postData[ActionInterface::PARAM_NAME_URL_ENCODED] = $this->urlHelper->getEncodedUrl($url);
+        }
+
+        return $this->getPostHelper()->getPostData(
+            $this->getAddToCartUrl($product),
+            $postData
+        );
+    }
+
+    /**
      * @return string
      */
     private function getBrandName()
     {
         $value = '';
-        /** @var \Magento\Catalog\Model\Product $product */
-        $product = $this->_coreRegistry->registry('product');
-        $attributeCode = $this->helper->getBrandAttributeCode();
-        $attributeValue = $product->getData($attributeCode);
-        $attribute = $product->getResource()->getAttribute($attributeCode);
+        $attribute = $this->brandAttribute->getAttribute();
         if ($attribute && $attribute->usesSource()) {
+            $attributeValue = $this->getBrandValue();
             $value = $attribute->getSource()->getOptionText($attributeValue);
         }
 
@@ -232,5 +311,13 @@ class MoreFrom extends AbstractProduct
     public function getWishlistHelper()
     {
         return $this->_wishlistHelper;
+    }
+
+    /**
+     * @return int
+     */
+    private function getStoreId(): int
+    {
+        return (int) $this->_storeManager->getStore()->getId();
     }
 }

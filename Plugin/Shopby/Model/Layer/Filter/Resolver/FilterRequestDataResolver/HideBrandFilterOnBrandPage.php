@@ -20,7 +20,7 @@ class HideBrandFilterOnBrandPage
     {
         $this->contentHelper = $contentHelper;
     }
-    
+
     public function afterIsVisibleWhenSelected(FilterDataResolver $subject, bool $result, FilterInterface $filter): bool
     {
         return ($result && $this->isBrandingBrand($filter)) ? false : $result;
@@ -29,6 +29,7 @@ class HideBrandFilterOnBrandPage
     private function isBrandingBrand(FilterInterface $subject): bool
     {
         $brand = $this->contentHelper->getCurrentBranding();
-        return $brand && (FilterSetting::ATTR_PREFIX . $subject->getRequestVar() == $brand->getFilterCode());
+
+        return $brand && (FilterSetting::ATTR_PREFIX . $subject->getRequestVar() === $brand->getFilterCode());
     }
 }

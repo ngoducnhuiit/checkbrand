@@ -40,12 +40,12 @@ class Scope extends Store
      */
     protected function prepareItem(array $item)
     {
-        $attrCode = $item[BrandAttribute::ORIG_FILTER_CODE] ?? $item[FilterSettingInterface::FILTER_CODE] ?? null;
+        $attrCode = $item[BrandAttribute::ORIG_ATTRIBUTE_CODE] ?? $item[FilterSettingInterface::ATTRIBUTE_CODE] ?? null;
         if ($attrCode) {
             $allAttributeCodes = $this->configProvider->getAllBrandAttributeCodes();
             $storeIds = [];
             foreach ($allAttributeCodes as $storeId => $code) {
-                if ($attrCode === $code || $attrCode === FilterSetting::ATTR_PREFIX . $code) {
+                if ($attrCode === $code) {
                     $storeIds[] = $storeId;
                 }
             }

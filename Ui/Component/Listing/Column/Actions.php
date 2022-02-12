@@ -18,13 +18,6 @@ class Actions extends Column
      */
     private $urlBuilder;
 
-    /**
-     * @param ContextInterface $context
-     * @param UrlInterface $urlBuilder
-     * @param UiComponentFactory $uiComponentFactory
-     * @param array $components
-     * @param array $data
-     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -52,11 +45,13 @@ class Actions extends Column
         if (isset($dataSource['data']['items'])) {
             $storeId = (int) $this->context->getFilterParam('scope') ?: 0;
             foreach ($dataSource['data']['items'] as &$item) {
-                $code = $item[BrandAttribute::ORIG_FILTER_CODE] ?? $item[FilterSettingInterface::FILTER_CODE] ?? null;
+                $code = $item[BrandAttribute::ORIG_ATTRIBUTE_CODE]
+                    ?? $item[FilterSettingInterface::ATTRIBUTE_CODE]
+                    ?? null;
                 $item[$this->getData('name')]['edit'] = [
                     'href' => $this->urlBuilder->getUrl(
                         'amasty_shopbybrand/slider/edit',
-                        ['filter_code' => $code, 'option_id' => $item['option_id'], 'store' => $storeId]
+                        ['attribute_code' => $code, 'option_id' => $item['option_id'], 'store' => $storeId]
                     ),
                     'label' => __('Edit'),
                     'hidden' => false,

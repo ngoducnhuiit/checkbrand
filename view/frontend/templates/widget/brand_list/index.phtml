@@ -136,8 +136,13 @@ $brandListClass = 'ambrands-widget-' . random_int(1, 1000);
     <script type="text/x-magento-init">
          {
          <?php if ($block->isTooltipEnabled()): ?>
-             "[data-amshopby-js='brand-tooltip']": {
-                 "amBrandsTooltipInit": {}
+             ".ambrands-brand-item[data-amshopby-js='brand-tooltip']": {
+                 "amShopbyTooltipInit": {
+                    "position": {
+                        "my": "left-25 bottom-15"
+                    },
+                    "selector": "li"
+                 }
              },
          <?php endif ?>
              "*": {

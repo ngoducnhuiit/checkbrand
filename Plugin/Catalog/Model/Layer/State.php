@@ -2,15 +2,12 @@
 
 namespace Amasty\ShopbyBrand\Plugin\Catalog\Model\Layer;
 
+use Amasty\ShopbyBase\Helper\FilterSetting;
+use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Catalog\Model\Layer\State as MagentoStateModel;
 use Amasty\ShopbyBrand\Helper\Content;
 use Magento\Catalog\Model\Layer\Filter\Item;
 
-/**
- * Class State
- *
- * @package Amasty\ShopbyBrand\Plugin\Catalog\Model\Layer
- */
 class State
 {
     /**
@@ -37,15 +34,10 @@ class State
         return $proceed($filter);
     }
 
-    /**
-     * @param Item $filter
-     * @return bool
-     */
-    protected function isCurrentBranding($filter)
+    private function isCurrentBranding(FilterInterface $filter): bool
     {
         $brand = $this->contentHelper->getCurrentBranding();
-        return $brand &&
-            (\Amasty\ShopbyBase\Helper\FilterSetting::ATTR_PREFIX . $filter->getRequestVar() ==
-                $brand->getFilterCode());
+
+        return $brand && (FilterSetting::ATTR_PREFIX . $filter->getRequestVar() === $brand->getFilterCode());
     }
 }

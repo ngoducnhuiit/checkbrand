@@ -44,4 +44,14 @@
             <argument name="collectionFactory" xsi:type="object">Magento\CatalogSearch\Model\ResourceModel\Fulltext\CollectionFactory</argument>
         </arguments>
     </type>
+
+    <!-- Integration with Amasty_ShopbyBase  -->
+    <type name="Amasty\ShopbyBase\Model\Integration\ShopbyBrand\GetConfigProvider">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="object" xsi:type="object">Amasty\ShopbyBrand\Model\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- End integration with Amasty_ShopbyBase  -->
 </config>

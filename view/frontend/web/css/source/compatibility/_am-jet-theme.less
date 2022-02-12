@@ -49,6 +49,46 @@
             .ambrands-input-placeholder(#a8a69f, @color-gray-light, 400, 14px, 16px);
         }
     }
+
+    .header.content {
+        flex-wrap: wrap;
+    }
+
+    .page-footer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer.content,
+    .page-footer,
+    .header.content,
+    .panel.header {
+        .ambrands-letters-list,
+        > .ambrands-brandlist-widget,
+        > .am-widget-brand-slider {
+            width: 100%;
+            order: 1;
+        }
+    }
+
+    .ui-tooltip.ui-widget,
+    .amslider .swiper-slide .ambrands-label,
+    .ambrands-letters-list .ambrands-letter .ambrands-title {
+        .lib-css(color, @amtheme__text-primary__color);
+    }
+
+    .ui-tooltip.ui-widget {
+        .lib-css(border-color, @amtheme__background-secondary__color);
+        .lib-css(background, @amtheme__background-primary__color);
+        .lib-css(box-shadow, 1px 0 3px @amtheme__background-primary__color);
+    }
+
+    .ui-tooltip .arrow {
+        &:before,
+        &:after {
+            .lib-css(border-color, @amtheme__background-secondary__color);
+        }
+    }
 }
 
 //
@@ -66,10 +106,6 @@
             box-shadow: none;
         }
 
-        .ambrands-list-container {
-            background: #f8f8f8;
-        }
-
         .ambrands-letters-filter {
             background: transparent;
         }
@@ -79,6 +115,10 @@
         letter-spacing: .03em;
         font-weight: 500;
         line-height: 16px;
+    }
+
+    .ambrands-list-popup {
+        background: @amtheme__background-secondary__color
     }
 
     .ambrands-list-popup .ambrands-letters-filter {

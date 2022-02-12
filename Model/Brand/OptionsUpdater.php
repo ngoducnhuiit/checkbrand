@@ -52,13 +52,12 @@ class OptionsUpdater
             if (!$attrCode || ($attributeCode && $attrCode !== $attributeCode)) {
                 continue;
             }
-            
-            $filterCode = FilterSettingHelper::ATTR_PREFIX . $attrCode;
+
             $currentAttributeValues = $this->getCurrentBrandAttributeValues($attrCode);
-            $this->addMissingBrandOptions($currentAttributeValues, $filterCode);
+            $this->addMissingBrandOptions($currentAttributeValues, FilterSettingHelper::ATTR_PREFIX . $attrCode);
         }
     }
-    
+
     /**
      * @param string $attrCode
      * @return string[]

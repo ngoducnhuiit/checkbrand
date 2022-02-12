@@ -6,7 +6,7 @@ use Amasty\ShopbyBase\Helper\Data;
 
 class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
 {
-    const CONFIG_VALUES_PATH = 'amshopby_brand/general/brands_popup_config';
+    public const CONFIG_VALUES_PATH = 'amshopby_brand/general/brands_popup_config';
 
     /**
      * @var string

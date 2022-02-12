@@ -2,8 +2,8 @@
 
 namespace Amasty\ShopbyBrand\Observer\Admin;
 
-use Amasty\ShopbyBase\Api\Data\OptionSettingInterface;
 use Amasty\ShopbyBase\Helper\FilterSetting;
+use Amasty\ShopbyBase\Api\Data\OptionSettingInterface;
 use Amasty\ShopbyBrand\Model\ConfigProvider;
 use Magento\Config\Model\Config\Source\Yesno;
 use Magento\Framework\Data\Form;
@@ -21,7 +21,7 @@ class OptionFormFeatured implements ObserverInterface
      * @var ConfigProvider
      */
     private $configProvider;
-    
+
     public function __construct(
         Yesno $yesNosource,
         ConfigProvider $configProvider
@@ -39,9 +39,13 @@ class OptionFormFeatured implements ObserverInterface
         $fieldSet = $observer->getEvent()->getFieldset();
         $setting = $observer->getEvent()->getSetting();
         $storeId = $observer->getEvent()->getStoreId();
-        $brandFilterCode = FilterSetting::ATTR_PREFIX . $this->configProvider->getBrandAttributeCode((int) $storeId);
+        $brandFilterCode = $this->configProvider->getBrandAttributeCode((int) $storeId);
+        $filterCode = $setting->getFilterCode();
+        if (strpos($filterCode, FilterSetting::ATTR_PREFIX) !== false) {
+            $filterCode = substr($filterCode, 5);
+        }
 
-        if ($setting->getFilterCode() == $brandFilterCode) {
+        if ($filterCode == $brandFilterCode) {
             $fieldSet->setData('legend', 'Brand Options');
 
             $fieldSet->addField(

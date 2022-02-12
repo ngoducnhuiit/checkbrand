@@ -91,12 +91,22 @@ class Collection extends BrandCollection implements SearchResultInterface
 
     protected function addAttributeFilter()
     {
-        $filterCodes = [];
-        foreach ($this->configProvider->getAllBrandAttributeCodes() as $attrCode) {
-            $filterCodes[] = FilterSetting::ATTR_PREFIX . $attrCode;
-        }
-        
-        $this->addFieldToFilter(OptionSettingInterface::FILTER_CODE, ['in' => $filterCodes]);
+        $this->addFieldToFilter(
+            OptionSettingInterface::FILTER_CODE,
+            [
+                'in' => $this->convertAttributesToFilterCodes($this->configProvider->getAllBrandAttributeCodes())
+            ]
+        );
+    }
+
+    private function convertAttributesToFilterCodes(array $codes)
+    {
+        return array_map(
+            function ($code) use ($codes) {
+                return FilterSetting::ATTR_PREFIX . $code;
+            },
+            $codes
+        );
     }
 
     /**

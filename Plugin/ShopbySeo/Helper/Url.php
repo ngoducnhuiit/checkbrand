@@ -6,11 +6,6 @@ use Amasty\ShopbyBrand\Helper\Data as BrandHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class Url
- *
- * @package Amasty\ShopbyBrand\Plugin\ShopbySeo\Helper
- */
 class Url
 {
     /**

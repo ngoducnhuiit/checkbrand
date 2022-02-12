@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBrand\Ui\Component\Listing\Columns;
 
-use Amasty\ShopbyBase\Helper\FilterSetting;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\UrlInterface;
@@ -13,7 +12,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 
 class BrandAttribute extends \Magento\Ui\Component\Listing\Columns\Column
 {
-    const ORIG_FILTER_CODE = 'orig_filter_code';
+    public const ORIG_ATTRIBUTE_CODE = 'orig_attribute_code';
 
     /**
      * @var UrlInterface
@@ -47,8 +46,8 @@ class BrandAttribute extends \Magento\Ui\Component\Listing\Columns\Column
     public function prepareDataSource(array $dataSource)
     {
         foreach (($dataSource['data']['items'] ?? []) as $key => $item) {
-            $dataSource['data']['items'][$key][self::ORIG_FILTER_CODE] = $item[$this->getData('name')];
-            $attributeCode = str_replace(FilterSetting::ATTR_PREFIX, '', $item[$this->getData('name')]);
+            $attributeCode = substr($item[$this->getData('name')], 5);
+            $dataSource['data']['items'][$key][self::ORIG_ATTRIBUTE_CODE] = $attributeCode;
             try {
                 $attribute = $this->attributeRepository->get(Product::ENTITY, $attributeCode);
                 $viewLink = $this->urlBuilder->getUrl(

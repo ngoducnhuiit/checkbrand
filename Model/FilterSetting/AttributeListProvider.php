@@ -5,11 +5,6 @@ namespace Amasty\ShopbyBrand\Model\FilterSetting;
 use Amasty\ShopbyBase\Model\FilterSetting\AttributeConfig\AttributeListProviderInterface;
 use Amasty\ShopbyBrand\Helper\Data as BrandHelper;
 
-/**
- * Class AttributeListProvider
- *
- * @package Amasty\ShopbyBrand\Model\FilterSetting
- */
 class AttributeListProvider implements AttributeListProviderInterface
 {
     /**

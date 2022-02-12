@@ -11,7 +11,7 @@ use Magento\Store\Model\StoreManager;
 
 class Content extends AbstractHelper
 {
-    const CATEGORY_FORCE_MIXED_MODE = 'amshopby_force_mixed_mode';
+    public const CATEGORY_FORCE_MIXED_MODE = 'amshopby_force_mixed_mode';
 
     /**
      * @var  Layer\Resolver
@@ -29,9 +29,9 @@ class Content extends AbstractHelper
     private $storeManager;
 
     /**
-     * OptionSettingInterface|null
+     * @var OptionSettingInterface
      */
-    private $currentBranding = null;
+    private $currentBranding;
 
     /**
      * @var Data
@@ -80,7 +80,7 @@ class Content extends AbstractHelper
     {
         $this->currentBranding = $this->optionHelper->getSettingByValue(
             $brandValue,
-            \Amasty\ShopbyBase\Helper\FilterSetting::ATTR_PREFIX . $this->helper->getBrandAttributeCode(),
+            $this->helper->getBrandAttributeCode(),
             $this->storeManager->getStore()->getId()
         );
     }

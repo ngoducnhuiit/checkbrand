@@ -8,8 +8,8 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class SliderSort implements OptionSourceInterface
 {
-    const NAME = 'name';
-    const POSITION = 'position';
+    public const NAME = 'name';
+    public const POSITION = 'position';
 
     public function toOptionArray(): array
     {

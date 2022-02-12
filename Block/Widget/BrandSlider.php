@@ -10,21 +10,29 @@ use Magento\Widget\Block\BlockInterface;
 
 class BrandSlider extends BrandListAbstract implements BlockInterface
 {
-    const HTML_ID = 'amslider_id';
+    public const HTML_ID = 'amslider_id';
 
-    const DEFAULT_ITEM_NUMBER = 4;
+    public const DEFAULT_ITEM_NUMBER = 4;
 
-    const DEFAULT_IMG_WIDTH = 130;
+    public const DEFAULT_IMG_WIDTH = 130;
 
     /**
      * deprecated. used for back compatibility.
      */
-    const CONFIG_VALUES_PATH = 'amshopby_brand/slider';
+    public const CONFIG_VALUES_PATH = 'amshopby_brand/slider';
 
     /**
      * @var  array|null
      */
     protected $items;
+
+    public function getCacheKeyInfo()
+    {
+        $parts = parent::getCacheKeyInfo();
+        $parts[] = 'brand_slider_widget';
+
+        return $parts;
+    }
 
     /**
      * @return array

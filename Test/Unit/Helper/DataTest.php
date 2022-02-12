@@ -115,17 +115,17 @@ class DataTest extends \PHPUnit\Framework\TestCase
         $this->scopeConfig->expects($this->any())->method('getValue')->willReturn('test');
         $option = $this->getObjectManager()->getObject(\Magento\Eav\Model\Entity\Attribute\Option::class);
         $option->setValue('option');
-        $this->setProperty($this->helper, 'brandAliases', ['alias1', 'alias2', 'alias3']);
+        $this->setProperty($this->helper, 'brandAliases', [1 => ['alias1', 'alias2', 'alias3']]);
 
-        $this->assertEquals('#', $this->helper->getBrandUrl($option));
+        $this->assertEquals('#', $this->helper->getBrandUrl($option, 1));
 
         $this->setProperty(
             $this->helper,
             'brandAliases',
-            ['option' => 'alias1', 'option1' => 'alias2', 'option2' => 'alias3']
+            [1 => ['option' => 'alias1', 'option1' => 'alias2', 'option2' => 'alias3']]
         );
 
-        $this->assertEquals('test/alias1', $this->helper->getBrandUrl($option));
+        $this->assertEquals('test/alias1', $this->helper->getBrandUrl($option, 1));
     }
 
     /**
@@ -139,10 +139,10 @@ class DataTest extends \PHPUnit\Framework\TestCase
         $this->setProperty(
             $this->helper,
             'brandAliases',
-            ['option' => 'alias1', 'option1' => 'alias2', 'option2' => 'alias3']
+            [1 => ['option' => 'alias1', 'option1' => 'alias2', 'option2' => 'alias3']]
         );
 
-        $this->assertEquals('alias1', $this->helper->getBrandUrl($option));
+        $this->assertEquals('alias1', $this->helper->getBrandUrl($option, 1));
     }
 
     /**

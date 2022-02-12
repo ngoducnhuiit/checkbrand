@@ -4,15 +4,19 @@ namespace Amasty\ShopbyBrand\Block\Widget;
 
 use Amasty\ShopbyBase\Api\UrlBuilderInterface;
 use Amasty\ShopbyBrand\Helper\Data as DataHelper;
+use Amasty\ShopbyBrand\Model\Attribute;
 use Amasty\ShopbyBrand\Model\Brand\BrandListDataProvider;
+use Amasty\ShopbyBase\Model\OptionSetting;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Eav\Model\Entity\Attribute\Option;
 
-abstract class BrandListAbstract extends \Magento\Framework\View\Element\Template
+abstract class BrandListAbstract extends \Magento\Framework\View\Element\Template implements IdentityInterface
 {
-    const PATH_BRAND_ATTRIBUTE_CODE = 'amshopby_brand/general/attribute_code';
+    public const PATH_BRAND_ATTRIBUTE_CODE = 'amshopby_brand/general/attribute_code';
 
     /**
      * @var DataHelper
@@ -34,20 +38,59 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
      */
     protected $brandListDataProvider;
 
+    /**
+     * @var Attribute
+     */
+    private $brandAttribute;
+
     public function __construct(
         Context $context,
         DataPersistorInterface $dataPersistor,
         DataHelper $helper,
         UrlBuilderInterface $amUrlBuilder,
         BrandListDataProvider $brandListDataProvider,
+        Attribute $brandAttribute,
         array $data = []
     ) {
         $this->helper = $helper;
         $this->amUrlBuilder = $amUrlBuilder;
         $this->dataPersistor = $dataPersistor;
         $this->brandListDataProvider = $brandListDataProvider;
+        $this->brandAttribute = $brandAttribute;
 
         parent::__construct($context, $data);
+    }
+
+    /**
+     * Initialize block's cache
+     *
+     * @return void
+     */
+    protected function _construct(): void
+    {
+        parent::_construct();
+
+        if (!$this->hasData('cache_lifetime')) {
+            $this->setData('cache_lifetime', 86400);
+        }
+    }
+
+    protected function getCacheTags(): array
+    {
+        $tags = parent::getCacheTags();
+        $tags[] = OptionSetting::CACHE_TAG;
+
+        return $tags;
+    }
+
+    public function getIdentities(): array
+    {
+        $productAttribute = $this->brandAttribute->getAttribute();
+        if ($productAttribute !== null) {
+            return $productAttribute->getIdentities();
+        }
+
+        return [];
     }
 
     /**

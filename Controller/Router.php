@@ -5,11 +5,6 @@ namespace Amasty\ShopbyBrand\Controller;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Module\Manager;
 
-/**
- * Class Router
- *
- * @package Amasty\ShopbyBrand\Controller
- */
 class Router implements \Magento\Framework\App\RouterInterface
 {
     /**

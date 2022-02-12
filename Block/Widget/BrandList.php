@@ -14,12 +14,20 @@ class BrandList extends BrandListAbstract implements BlockInterface
     /**
      * deprecated. leave for back compatibility.
      */
-    const CONFIG_VALUES_PATH = 'amshopby_brand/brands_landing';
+    public const CONFIG_VALUES_PATH = 'amshopby_brand/brands_landing';
 
     /**
      * @var  array|null
      */
     protected $items;
+
+    public function getCacheKeyInfo()
+    {
+        $parts = parent::getCacheKeyInfo();
+        $parts[] = 'brand_list';
+
+        return $parts;
+    }
 
     /**
      * @return array

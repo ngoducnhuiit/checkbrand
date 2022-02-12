@@ -7,15 +7,10 @@ use Amasty\ShopbyBase\Model\Customizer\Category\CustomizerInterface;
 use Magento\Catalog\Model\Category;
 use Amasty\ShopbyBase\Model\Category\Manager as CategoryManager;
 
-/**
- * Class Brand
- *
- * @package Amasty\ShopbyBrand\Model\Customizer\Category
- */
 class Brand implements CustomizerInterface
 {
-    const APPLY_TO_HEADING = 'am_apply_to_heading';
-    const APPLY_TO_META = 'am_apply_to_meta';
+    public const APPLY_TO_HEADING = 'am_apply_to_heading';
+    public const APPLY_TO_META = 'am_apply_to_meta';
     /**
      * @var \Amasty\ShopbyBrand\Helper\Content
      */

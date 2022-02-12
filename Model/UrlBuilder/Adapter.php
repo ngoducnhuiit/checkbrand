@@ -11,10 +11,10 @@ use Magento\Store\Api\Data\StoreInterface;
 
 class Adapter implements AdapterInterface
 {
-    const SELF_ROUTE_PATH = 'ambrand/index/index';
-    const SEO_BRAND_MODULES = ['amshopby', 'cms'];
-    const MODULE_NAME = 'ambrand';
-    const SAME_PAGE_ROUTE = '*/*/*';
+    public const SELF_ROUTE_PATH = 'ambrand/index/index';
+    public const SEO_BRAND_MODULES = ['amshopby', 'cms'];
+    public const MODULE_NAME = 'ambrand';
+    public const SAME_PAGE_ROUTE = '*/*/*';
 
     /**
      * @var \Magento\Framework\Url

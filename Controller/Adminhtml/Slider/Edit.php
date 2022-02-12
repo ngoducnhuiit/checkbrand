@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Amasty\ShopbyBrand\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
@@ -9,9 +11,6 @@ use Amasty\ShopbyBrand\Controller\RegistryConstants;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Amasty\ShopbyBase\Helper\OptionSetting;
 
-/**
- * Class Edit
- */
 class Edit extends Action
 {
     /** @var CoreRegistry */
@@ -78,13 +77,13 @@ class Edit extends Action
      */
     private function loadSettingModel()
     {
-        $filterCode = $this->getRequest()->getParam('filter_code');
+        $attributeCode = $this->getRequest()->getParam('attribute_code');
         $optionId = $this->getRequest()->getParam('option_id');
         $storeId = $this->getRequest()->getParam('store', 0);
-        if (!$filterCode || !$optionId) {
+        if (!$attributeCode || !$optionId) {
             throw new NoSuchEntityException();
         }
-        $model = $this->settingHelper->getSettingByValue($optionId, $filterCode, $storeId);
+        $model = $this->settingHelper->getSettingByValue($optionId, $attributeCode, $storeId);
         if (!$model->getId()) {
             throw new NoSuchEntityException();
         }

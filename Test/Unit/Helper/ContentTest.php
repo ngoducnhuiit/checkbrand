@@ -18,11 +18,11 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     use Traits\ObjectManagerTrait;
     use Traits\ReflectionTrait;
 
-    const CHECK_ROOT_CATEGORY_VALUE = true;
+    public const CHECK_ROOT_CATEGORY_VALUE = true;
 
-    const BRAND_VALUE = "1";
+    public const BRAND_VALUE = "1";
 
-    const BRAND_ATTRIBUTE_CODE = 1;
+    public const BRAND_ATTRIBUTE_CODE = 1;
 
     /**
      * @covers Content::getCurrentBranding
@@ -61,23 +61,8 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $storeManager->expects($this->any())->method('getStore')->will($this->returnValue($store));
 
         $optionHelper = $this->createMock(\Amasty\ShopbyBase\Helper\OptionSetting::class);
-        $optionHelper->expects($this->any())->method('getSettingByValue')->with(
-            $this->callback(
-                function ($arg1) {
-                    return is_string($arg1);
-                }
-            ),
-            $this->callback(
-                function ($arg2) {
-                    return is_string($arg2);
-                }
-            ),
-            $this->callback(
-                function ($arg3) {
-                    return is_int($arg3);
-                }
-            )
-        )->will($this->returnValue($curBranding));
+        $optionHelper->expects($this->any())->method('getSettingByValue')
+            ->will($this->returnValue($curBranding));
 
         $this->setProperty($content, 'helper', $helper, Content::class);
         $this->setProperty($content, '_request', $request);

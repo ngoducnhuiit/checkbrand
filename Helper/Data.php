@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBrand\Helper;
 
-use Amasty\ShopbyBase\Api\Data\OptionSettingRepositoryInterface;
+use Amasty\ShopbyBase\Api\Data\OptionSettingInterface;
 use Amasty\ShopbyBase\Helper\FilterSetting as FilterSettingHelper;
-use Amasty\ShopbyBase\Helper\OptionSetting as OptionSettingHelper;
+use Amasty\ShopbyBase\Helper\FilterSetting;
 use Amasty\ShopbyBase\Model\ResourceModel\OptionSetting\CollectionFactory as OptionCollectionFactory;
-use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
+use Amasty\ShopbyBrand\Model\ConfigProvider;
 use Magento\Catalog\Model\Product\Url as ProductUrl;
 use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -16,23 +16,21 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface as StoreManagerInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends AbstractHelper
 {
-    const DEFAULT_CATEGORY_LOGO_SIZE = 30;
+    /**
+     * @deprecated moved to separate class
+     */
+    public const DEFAULT_CATEGORY_LOGO_SIZE = ConfigProvider::DEFAULT_CATEGORY_LOGO_SIZE;
 
-    const PATH_BRAND_URL_KEY = 'amshopby_brand/general/url_key';
+    public const PATH_BRAND_URL_KEY = 'amshopby_brand/general/url_key';
 
     /**
      * @var UrlInterface
      */
     private $url;
-
-    /**
-     * @var AttributeRepository
-     */
-    private $attributeRepository;
 
     /**
      * @var OptionCollectionFactory
@@ -121,7 +119,8 @@ class Data extends AbstractHelper
      */
     public function getBrandAliases($storeId = null)
     {
-        if (empty($this->brandAliases)) {
+        $storeId = $storeId ?: $this->storeManager->getStore()->getId();
+        if (!isset($this->brandAliases[$storeId])) {
             $attributeCode = $this->getBrandAttributeCode();
 
             if ($attributeCode == '') {
@@ -144,10 +143,10 @@ class Data extends AbstractHelper
                 );
             }
 
-            $this->brandAliases = $this->getStoreAliases($items, $storeId ?: $this->storeManager->getStore()->getId());
+            $this->brandAliases[$storeId] = $this->getStoreAliases($items, $storeId);
         }
 
-        return $this->brandAliases;
+        return $this->brandAliases[$storeId];
     }
 
     /**
@@ -239,9 +238,11 @@ class Data extends AbstractHelper
             \Magento\Store\Model\Store::DEFAULT_STORE_ID,
             $storeId
         ];
-        $filterCode =  FilterSettingHelper::ATTR_PREFIX . $this->getBrandAttributeCode();
         $collection = $this->optionCollectionFactory->create();
-        $collection->addFieldToFilter('filter_code', ['eq' => $filterCode])
+        $collection->addFieldToFilter(
+            OptionSettingInterface::FILTER_CODE,
+            ['eq' => FilterSetting::ATTR_PREFIX . $this->getBrandAttributeCode()]
+        )
             ->addFieldToFilter('value', ['in' => array_keys($defaultAliases)])
             ->addFieldToFilter('store_id', ['in' => $storeIds])
             ->addFieldToFilter('url_alias', ['neq' => ''])
@@ -315,7 +316,7 @@ class Data extends AbstractHelper
                     case 'image':
                         $imgUrl = $match == 'small_image' ? $item['img'] : $item['image'];
                         if (isset($imgUrl)) {
-                            $value = '<img class="am-brand-' . $match . '" src="' . $imgUrl . '"/>';
+                            $value = sprintf('<img class=\'am-brand-%s\' src=\'%s\'>', $match, $imgUrl);
                         }
                         break;
                 }
@@ -350,38 +351,38 @@ class Data extends AbstractHelper
     /**
      * used in graphQL
      * @return int|string
+     * @deprecated
      */
     public function getLogoProductPageWidth()
     {
-        return $this->getModuleConfig('product_page/width');
+        return ObjectManager::getInstance()->get(ConfigProvider::class)->getLogoWidth();
     }
 
     /**
      * used in graphQL
      * @return int|string
+     * @deprecated
      */
     public function getLogoProductPageHeight()
     {
-        return $this->getModuleConfig('product_page/height');
+        return ObjectManager::getInstance()->get(ConfigProvider::class)->getLogoHeight();
     }
 
     /**
      * @return int|string
+     * @deprecated
      */
     public function getBrandLogoProductListingWidth()
     {
-        $width = $this->getModuleConfig('product_listing_settings/listing_brand_logo_width');
-
-        return $width ?: self::DEFAULT_CATEGORY_LOGO_SIZE;
+        return ObjectManager::getInstance()->get(ConfigProvider::class)->getListingBrandLogoWidth();
     }
 
     /**
      * @return int|string
+     * @deprecated
      */
     public function getBrandLogoProductListingHeight()
     {
-        $height = $this->getModuleConfig('product_listing_settings/listing_brand_logo_height');
-
-        return $height ?: self::DEFAULT_CATEGORY_LOGO_SIZE;
+        return ObjectManager::getInstance()->get(ConfigProvider::class)->getListingBrandLogoHeight();
     }
 }

@@ -2,15 +2,10 @@
 
 namespace Amasty\ShopbyBrand\Model\Source;
 
-/**
- * Class TopmenuLink
- *
- * @package Amasty\ShopbyBrand\Model\Source
- */
 class TopmenuLink implements \Magento\Framework\Option\ArrayInterface
 {
-    const DISPLAY_FIRST = 1;
-    const DISPLAY_LAST = 2;
+    public const DISPLAY_FIRST = 1;
+    public const DISPLAY_LAST = 2;
 
     public function toOptionArray()
     {

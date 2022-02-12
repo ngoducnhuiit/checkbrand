@@ -3,7 +3,6 @@ var config = {
         '*': {
             amBrandsSearch: 'Amasty_ShopbyBrand/js/components/ambrands-search',
             amBrandsFilterInit: 'Amasty_ShopbyBrand/js/components/ambrands-filter-init',
-            amBrandsTooltipInit: 'Amasty_ShopbyBrand/js/components/ambrands-tooltip-init',
             amBrandsFilter: 'Amasty_ShopbyBrand/js/brand-filter'
         }
     },

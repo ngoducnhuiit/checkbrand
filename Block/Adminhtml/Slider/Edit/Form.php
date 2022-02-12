@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Amasty\ShopbyBrand\Block\Adminhtml\Slider\Edit;
 
+use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Block\Adminhtml\Form\Renderer\Fieldset\Element as RenderElement;
 use Amasty\ShopbyBrand\Controller\RegistryConstants;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Registry;
 
 class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
@@ -14,10 +20,10 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
     protected $_renderer;
 
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Amasty\ShopbyBase\Block\Adminhtml\Form\Renderer\Fieldset\Element $renderer,
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        RenderElement $renderer,
         array $data = []
     ) {
         $this->_renderer = $renderer;
@@ -26,14 +32,14 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
 
     protected function _prepareForm()
     {
-        $filterCode = $this->getRequest()->getParam('filter_code');
+        $attributeCode = $this->getRequest()->getParam(FilterSettingInterface::ATTRIBUTE_CODE);
         $optionId = $this->getRequest()->getParam('option_id');
         $storeId = $this->getRequest()->getParam('store', 0);
         /** @var \Amasty\ShopbyPage\Api\Data\PageInterface $model */
         $model = $this->_coreRegistry->registry(RegistryConstants::FEATURED);
         $urlParams = [
             'option_id' => (int)$optionId,
-            'filter_code' => $filterCode,
+            'attribute_code' => $attributeCode,
             'store' => (int)$storeId
         ];
         /** @var \Magento\Framework\Data\Form $form */
